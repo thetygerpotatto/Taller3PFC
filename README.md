@@ -1,7 +1,9 @@
-# Plantilla talleres programación funcional
+# Taller 3 Programacion funcional y concurrente
 
-## Reglas
+## Integrantes
 
-- Sólo modificar lo indicado por el docente
-- Debe agregar las pruebas de software solicitadas en el docente
-- El informe en formato PDF debe estar en la raiz del proyecto
+-   Jaime Noreña    : 2359523  
+-   Dilan Lemos     : 235952
+-   Juan Restrepo   : 235952
+-   Diego Lenis     : 235952
+
