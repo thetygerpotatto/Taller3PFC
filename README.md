@@ -3,7 +3,7 @@
 ## Integrantes
 
 -   Jaime Noreña    : 2359523  
--   Dilan Lemos     : 235952
--   Juan Restrepo   : 235952
--   Diego Lenis     : 235952
+-   Dilan Lemos     : 2359416
+-   Juan Restrepo   : 2359517
+-   Diego Lenis     : 2359540
 
