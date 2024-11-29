@@ -22,4 +22,13 @@ class Matrices {
     val l = m.length
     Vector.tabulate(l, l) { (i, j) => m(j)(i) }
   }
+
+  def MultMatriz(m1: Matriz, m2: Matriz): Matriz = {
+
+    val length = m1.length
+    val transp_m2 = transpuesta(m2)
+    if (m1.length == m2.length) {
+      Vector.tabulate(length, length) { (i, j) => ProdPunto(m1(i), transp_m2(j))}
+    } else m1
+  }
 }
