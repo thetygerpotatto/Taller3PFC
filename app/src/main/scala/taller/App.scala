@@ -5,7 +5,17 @@ package taller
 
 object App {
   def main(args: Array[String]): Unit = {
-    println(greeting())
+
+    val ObjMatrices = new Matrices()
+
+    val vector1 = ObjMatrices.MatrizAlAzar(2, 10)
+    val vector2 = ObjMatrices.MatrizAlAzar(2, 10)
+
+    println("vector 1:", vector1)
+    println("vector 2:", vector2)
+
+    val prodpunto = ObjMatrices.MultMatriz(vector1, vector2)
+    println("producto punto:", prodpunto)
   }
 
   def greeting(): String = "Hello, world!"
