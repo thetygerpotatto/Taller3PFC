@@ -96,3 +96,10 @@ class Matrices {
     }
   }
 }
+
+//Función para restar dos matrices de igual tamaño
+def restaMatriz(m1: Matriz , m2: Matriz ) : Matriz ={
+  assert(m1.length == m2.length)
+  val length = m1.length
+  Vector.tabulate(length, length) {(i, j) => m1(i)(j) - m2(i)(j)}
+}
