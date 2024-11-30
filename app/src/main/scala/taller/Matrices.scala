@@ -14,6 +14,13 @@ class Matrices {
     Vector.fill(long, long)(random.nextInt(vals))
   }
 
+  def vectorAlAzar ( long : Int , vals : Int ) : Vector [ Int ] = {
+    //Crea un vector de enteros de longitud long ,
+    // con valores aleatorios entre 0 y vals
+    val v = Vector.fill(long)(Random.nextInt(vals))
+    v
+  }
+
   // Función para calcular producto punto
   def ProdPunto(v1: Vector[Int], v2: Vector[Int]): Int = {
     (v1 zip v2).map { case (i, j) => i * j }.sum
