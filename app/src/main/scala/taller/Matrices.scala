@@ -1,5 +1,6 @@
 package taller
 import scala.util.Random
+import common._
 
 class Matrices {
   // Tipo de matriz definido como alias
@@ -27,8 +28,17 @@ class Matrices {
 
     val length = m1.length
     val transp_m2 = transpuesta(m2)
-    if (m1.length == m2.length) {
-      Vector.tabulate(length, length) { (i, j) => ProdPunto(m1(i), transp_m2(j))}
-    } else m1
+    assert(m1.length == m2.length)
+    Vector.tabulate(length, length) { (i, j) => ProdPunto(m1(i), transp_m2(j))}
+  }
+
+  def MultMatrizPar(m1: Matriz, m2: Matriz): Matriz = {
+
+    val length = m1.length
+    val transp_m2 = transpuesta(m2)
+    assert(m1.length == m2.length)
+    // val tab: Vector[(Int, Int)] = Vector.tabulate(length*length) {(i: Int) => (i/length,i%length)}
+    val joins = Vector.tabulate(length, length) {(i, j) => task(ProdPunto(m1(i), transp_m2(j)))}
+    Vector.tabulate(length, length) {(i, j) => joins(i)(j).join()}
   }
 }
