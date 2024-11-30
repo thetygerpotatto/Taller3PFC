@@ -49,7 +49,7 @@ class Matrices {
   
   def sumMatriz(m1: Matriz, m2: Matriz) :Matriz = {
     assert(isPowerOfTwo(m1.length) && isPowerOfTwo(m2.length) && m1.length == m2.length)
-    length : Ing = m1.length
+    val length : Int = m1.length
     Vector.tabulate(length, length) {(i, j) => m1(i)(j) + m2(i)(j)}
   }
   
@@ -61,5 +61,31 @@ class Matrices {
       else iPOT(n/2)
     }
     iPOT(n)
+  }
+
+  def MultMatrizRec(m1: Matriz, m2: Matriz) : Matriz = {
+    assert(isPowerOfTwo(m1.length) && isPowerOfTwo(m2.length) && m1.length == m2.length)
+    val length = m1.length
+    if (length <= 2) MultMatriz(m1, m2)
+    else {
+      val subMl = length/2
+      val sm1 = sumMatriz(MultMatrizRec(subMatriz(m1, 0, 0, subMl), subMatriz(m2, 0, 0, subMl)),
+                MultMatrizRec(subMatriz(m1, 0, subMl, subMl), subMatriz(m2, subMl, 0, subMl)))
+
+      val sm2 = sumMatriz(MultMatrizRec(subMatriz(m1, 0, 0, subMl), subMatriz(m2, 0, subMl, subMl)),
+                MultMatrizRec(subMatriz(m1, 0, subMl, subMl), subMatriz(m2, subMl, subMl, subMl)))
+
+      val sm3 = sumMatriz(MultMatrizRec(subMatriz(m1, subMl, 0, subMl), subMatriz(m2, 0, 0, subMl)),
+                MultMatrizRec(subMatriz(m1, subMl, subMl, subMl), subMatriz(m2, subMl, 0, subMl)))
+
+      val sm4 = sumMatriz(MultMatrizRec(subMatriz(m1, subMl, 0, subMl), subMatriz(m2, 0, subMl, subMl)),
+                MultMatrizRec(subMatriz(m1, subMl, subMl, subMl), subMatriz(m2, subMl, subMl, subMl)))
+
+      val result: Vector[Vector[Int]] = Vector(sm1(0) ++ sm2(0),
+            sm1(1) ++ sm2(1),
+            sm3(0) ++ sm4(0),
+            sm3(1) ++ sm4(1))
+      result
+    }
   }
 }

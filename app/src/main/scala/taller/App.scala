@@ -7,20 +7,25 @@ import org.scalameter._
 object App {
   type Matriz = Vector[Vector[Int]]
   def main(args: Array[String]): Unit = {
-    val size = 100
+    val size = 2
     val ObjMatrices = new Matrices()
-    var mseq: Matriz = Vector.fill(size, size) {0}
-    var mpar: Matriz = Vector.fill(size, size) {0}
+    var mseq: Matriz = Vector.fill(size, size) {1}
+    var mpar: Matriz = Vector.fill(size, size) {2}
 
-    // val vector1 = ObjMatrices.MatrizAlAzar(size, 10)//Vector(Vector(1, 2, 3), Vector(4, 5, 6), Vector(7, 8, 9))    
-    // val vector2 = ObjMatrices.MatrizAlAzar(size, 10)//Vector(Vector(9, 8, 7), Vector(6, 5, 4), Vector(3, 2, 1))
+    val vector1 = ObjMatrices.MatrizAlAzar(size, 10)//Vector(Vector(1, 2, 3), Vector(4, 5, 6), Vector(7, 8, 9))    
+    val vector2 = ObjMatrices.MatrizAlAzar(size, 10)//Vector(Vector(9, 8, 7), Vector(6, 5, 4), Vector(3, 2, 1))
+  // val vector1 = Vector(Vector(1, 3, 1, 4), Vector(2, 4, 3, 2), Vector(6, 8, 7, 7), Vector(1, 8, 0, 3))
+  // val vector2 = Vector(Vector(1, 8, 9, 1), Vector(7, 6, 2, 8), Vector(4, 5, 5, 8), Vector(8, 4, 3, 4))
     // val seq = withWarmer(new Warmer.Default) measure {mseq = ObjMatrices.MultMatriz(vector1, vector2)}
     // val par = withWarmer(new Warmer.Default) measure {mpar = ObjMatrices.MultMatrizPar(vector1, vector2)}
     // val v = Vector(Vector(1, 2, 3), Vector(4, 5, 6), Vector(7, 8, 9))
     // println(v)
     // println(ObjMatrices.subMatriz(v, 1, 1, 2))
-    //
-    println(ObjMatrices.isPowerOfTwo(16))
+    val v = ObjMatrices.MultMatrizRec(vector1, vector2)
+    
+    println(vector1)
+    println(vector2)
+    println(v)
   }
 
   def greeting(): String = "Hello, world!"
