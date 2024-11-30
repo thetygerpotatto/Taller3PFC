@@ -5,17 +5,22 @@ package taller
 import org.scalameter._
 
 object App {
+  type Matriz = Vector[Vector[Int]]
   def main(args: Array[String]): Unit = {
-
+    val size = 100
     val ObjMatrices = new Matrices()
+    var mseq: Matriz = Vector.fill(size, size) {0}
+    var mpar: Matriz = Vector.fill(size, size) {0}
 
-    val vector1 = ObjMatrices.MatrizAlAzar(400, 10)
-    val vector2 = ObjMatrices.MatrizAlAzar(400, 10)
-    val seq = withWarmer(new Warmer.Default) measure { ObjMatrices.MultMatriz(vector1, vector2)}
-    val par = withWarmer(new Warmer.Default) measure {ObjMatrices.MultMatrizPar(vector1, vector2)}
-
-    println(seq)
-    println(par)
+    // val vector1 = ObjMatrices.MatrizAlAzar(size, 10)//Vector(Vector(1, 2, 3), Vector(4, 5, 6), Vector(7, 8, 9))    
+    // val vector2 = ObjMatrices.MatrizAlAzar(size, 10)//Vector(Vector(9, 8, 7), Vector(6, 5, 4), Vector(3, 2, 1))
+    // val seq = withWarmer(new Warmer.Default) measure {mseq = ObjMatrices.MultMatriz(vector1, vector2)}
+    // val par = withWarmer(new Warmer.Default) measure {mpar = ObjMatrices.MultMatrizPar(vector1, vector2)}
+    // val v = Vector(Vector(1, 2, 3), Vector(4, 5, 6), Vector(7, 8, 9))
+    // println(v)
+    // println(ObjMatrices.subMatriz(v, 1, 1, 2))
+    //
+    println(ObjMatrices.isPowerOfTwo(16))
   }
 
   def greeting(): String = "Hello, world!"
