@@ -32,7 +32,7 @@ class Matrices {
     Vector.tabulate(l, l) { (i, j) => m(j)(i) }
   }
 
-  def MultMatriz(m1: Matriz, m2: Matriz): Matriz = {
+  def multMatriz(m1: Matriz, m2: Matriz): Matriz = {
 
     val length = m1.length
     val transp_m2 = transpuesta(m2)
@@ -40,7 +40,7 @@ class Matrices {
     Vector.tabulate(length, length) { (i, j) => ProdPunto(m1(i), transp_m2(j))}
   }
 
-  def MultMatrizPar(m1: Matriz, m2: Matriz): Matriz = {
+  def multMatrizPar(m1: Matriz, m2: Matriz): Matriz = {
     val length = m1.length
     val transp_m2 = transpuesta(m2)
     assert(m1.length == m2.length)
@@ -70,32 +70,52 @@ class Matrices {
     iPOT(n)
   }
 
-  def MultMatrizRec(m1: Matriz, m2: Matriz) : Matriz = {
-    assert(isPowerOfTwo(m1.length) && isPowerOfTwo(m2.length) && m1.length == m2.length)
+  def multMatrizRec(m1: Matriz, m2: Matriz) : Matriz = {
+    assert(isPowerOfTwo(m1.length) && isPowerOfTwo(m2.length) && m1.length == m2.length) {println("Las matrices de tener tamaño 2^k")}
     val length = m1.length
-    if (length <= 2) MultMatriz(m1, m2)
+    if (length <= 2) multMatriz(m1, m2)
     else {
       val subMl = length/2
-      val sm1 = sumMatriz(MultMatrizRec(subMatriz(m1, 0, 0, subMl), subMatriz(m2, 0, 0, subMl)),
-                MultMatrizRec(subMatriz(m1, 0, subMl, subMl), subMatriz(m2, subMl, 0, subMl)))
-
-      val sm2 = sumMatriz(MultMatrizRec(subMatriz(m1, 0, 0, subMl), subMatriz(m2, 0, subMl, subMl)),
-                MultMatrizRec(subMatriz(m1, 0, subMl, subMl), subMatriz(m2, subMl, subMl, subMl)))
-
-      val sm3 = sumMatriz(MultMatrizRec(subMatriz(m1, subMl, 0, subMl), subMatriz(m2, 0, 0, subMl)),
-                MultMatrizRec(subMatriz(m1, subMl, subMl, subMl), subMatriz(m2, subMl, 0, subMl)))
-
-      val sm4 = sumMatriz(MultMatrizRec(subMatriz(m1, subMl, 0, subMl), subMatriz(m2, 0, subMl, subMl)),
-                MultMatrizRec(subMatriz(m1, subMl, subMl, subMl), subMatriz(m2, subMl, subMl, subMl)))
-
-      val result: Vector[Vector[Int]] = Vector(sm1(0) ++ sm2(0),
-            sm1(1) ++ sm2(1),
-            sm3(0) ++ sm4(0),
-            sm3(1) ++ sm4(1))
+      val subMats = Vector.tabulate(2, 2)((i , j) => 
+          sumMatriz(multMatrizRec(subMatriz(m1, i*subMl, 0, subMl), subMatriz(m2, 0, j*subMl, subMl)),
+                    multMatrizRec(subMatriz(m1, i*subMl, subMl, subMl), subMatriz(m2, subMl, j*subMl, subMl))
+          ))
+      val result: Vector[Vector[Int]] = Vector(
+        subMats(0)(0)(0) ++ subMats(0)(1)(0),
+        subMats(0)(0)(1) ++ subMats(0)(1)(1),
+        subMats(1)(0)(0) ++ subMats(1)(1)(0),
+        subMats(1)(0)(1) ++ subMats(1)(1)(1))
       result
     }
   }
 
+  def multMatrizRecPar(m1: Matriz, m2: Matriz, maxProf: Int, prof: Int) : Matriz = {
+    assert(isPowerOfTwo(m1.length) && isPowerOfTwo(m2.length) && m1.length == m2.length) {println("Las matrices de tener tamaño 2^k")}
+    val length = m1.length
+    if (length <= 2) multMatriz(m1, m2)
+    else {
+      val subMl = length/2
+      if (prof < maxProf) {
+        val subMatTasks = Vector.tabulate(2, 2)((i, j) => 
+            task(sumMatriz(
+              multMatrizRecPar(subMatriz(m1, i*subMl, 0, subMl), subMatriz(m2, 0, j*subMl, subMl), maxProf, prof+1),
+              multMatrizRecPar(subMatriz(m1, i*subMl, subMl, subMl), subMatriz(m2, subMl, j*subMl, subMl), maxProf, prof+1)
+            )))
+
+        val subMats = Vector.tabulate(2,2) {(i, j) => subMatTasks(i)(j).join()}
+
+        val result: Vector[Vector[Int]] = Vector(
+          subMats(0)(0)(0) ++ subMats(0)(1)(0),
+          subMats(0)(0)(1) ++ subMats(0)(1)(1),
+          subMats(1)(0)(0) ++ subMats(1)(1)(0),
+          subMats(1)(0)(1) ++ subMats(1)(1)(1))
+
+        result
+      } else{
+        multMatriz(m1, m2) // Por alguna razon el multMatriz es 40 veces mas rapido que multMatrizRec asi que usamos ese
+      }                    // Igualmente multMatrizRecPar es el doble de rapida que multMatrizRec cuando usamos multMatrizRec
+    }                      // en lugar de multMatriz
+  }
   //Función para restar dos matrices de igual tamaño
   def restaMatriz(m1: Matriz , m2: Matriz ) : Matriz ={
     assert(m1.length == m2.length)

@@ -7,17 +7,24 @@ import org.scalameter._
 object App {
   type Matriz = Vector[Vector[Int]]
   def main(args: Array[String]): Unit = {
-
+    val size = 64
     val ObjMatrices = new Matrices()
 
-    val matriz1 = ObjMatrices.MatrizAlAzar(2, 10)
-    val matriz2 = ObjMatrices.MatrizAlAzar(2, 10)
+    val matriz1 = ObjMatrices.MatrizAlAzar(size, 10)
+    val matriz2 = ObjMatrices.MatrizAlAzar(size, 10)
 
-    println(matriz1)
-    println("-------------")
-    println(matriz2)
-    println("-------------")
-    println(ObjMatrices.restaMatriz(matriz1, matriz2))
+    val rec = withWarmer(new Warmer.Default) measure {ObjMatrices.multMatrizRec(matriz1, matriz2)}
+    val par = withWarmer(new Warmer.Default) measure {ObjMatrices.multMatrizRecPar(matriz1, matriz2, 2, 0)}
+
+    println(rec)
+    println(par)
+    // println(matriz1)
+    // println("-------------")
+    // println(matriz2)
+    // println("-------------")
+    // println(ObjMatrices.multMatriz(matriz1, matriz2))
+    // println("-------------")
+    // println(ObjMatrices.multMatrizRec(matriz1, matriz2))
   }
 
   def greeting(): String = "Hello, world!"
