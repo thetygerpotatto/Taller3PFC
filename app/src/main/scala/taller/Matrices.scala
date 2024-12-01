@@ -71,7 +71,7 @@ class Matrices {
   }
 
   def multMatrizRec(m1: Matriz, m2: Matriz) : Matriz = {
-    assert(isPowerOfTwo(m1.length) && isPowerOfTwo(m2.length) && m1.length == m2.length) {println("Las matrices de tener tamaño 2^k")}
+    assert(isPowerOfTwo(m1.length) && isPowerOfTwo(m2.length) && m1.length == m2.length) 
     val length = m1.length
     if (length <= 2) multMatriz(m1, m2)
     else {
@@ -90,7 +90,7 @@ class Matrices {
   }
 
   def multMatrizRecPar(m1: Matriz, m2: Matriz, maxProf: Int, prof: Int) : Matriz = {
-    assert(isPowerOfTwo(m1.length) && isPowerOfTwo(m2.length) && m1.length == m2.length) {println("Las matrices de tener tamaño 2^k")}
+    assert(isPowerOfTwo(m1.length) && isPowerOfTwo(m2.length) && m1.length == m2.length) 
     val length = m1.length
     if (length <= 2) multMatriz(m1, m2)
     else {
