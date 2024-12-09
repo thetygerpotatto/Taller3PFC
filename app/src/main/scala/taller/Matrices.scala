@@ -22,7 +22,7 @@ class Matrices {
   }
 
   // Función para calcular producto punto
-  def ProdPunto(v1: Vector[Int], v2: Vector[Int]): Int = {
+  def prodPunto(v1: Vector[Int], v2: Vector[Int]): Int = {
     (v1 zip v2).map { case (i, j) => i * j }.sum
   }
 
@@ -37,7 +37,7 @@ class Matrices {
     val length = m1.length
     val transp_m2 = transpuesta(m2)
     assert(m1.length == m2.length)
-    Vector.tabulate(length, length) { (i, j) => ProdPunto(m1(i), transp_m2(j))}
+    Vector.tabulate(length, length) { (i, j) => prodPunto(m1(i), transp_m2(j))}
   }
 
   def multMatrizPar(m1: Matriz, m2: Matriz): Matriz = {
@@ -45,7 +45,7 @@ class Matrices {
     val transp_m2 = transpuesta(m2)
     assert(m1.length == m2.length)
     // val tab: Vector[(Int, Int)] = Vector.tabulate(length*length) {(i: Int) => (i/length,i%length)}
-    val joins = Vector.tabulate(length, length) {(i, j) => task(ProdPunto(m1(i), transp_m2(j)))}
+    val joins = Vector.tabulate(length, length) {(i, j) => task(prodPunto(m1(i), transp_m2(j)))}
     Vector.tabulate(length, length) {(i, j) => joins(i)(j).join()}
   }
 
@@ -117,7 +117,7 @@ class Matrices {
     }                      // en lugar de multMatriz
   }
   //Función para restar dos matrices de igual tamaño
-  def restaMatriz(m1: Matriz , m2: Matriz ) : Matriz ={
+  def restMatriz(m1: Matriz , m2: Matriz ) : Matriz ={
     assert(m1.length == m2.length)
     val length = m1.length
     Vector.tabulate(length, length) {(i, j) => m1(i)(j) - m2(i)(j)}
