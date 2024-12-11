@@ -3,15 +3,30 @@
  */
 package taller
 import org.scalameter._
-import os._
+import common._
 
 object App {
   type Matriz = Vector[Vector[Int]]
   def main(args: Array[String]): Unit = {
-    val size =  1
-    val ObjMatrices = new Matrices()
-
   }
 
   def greeting(): String = "Hello, world!"
+
+  def testmultMatrix(): Unit = {
+    val bench = new Benchmark()
+    val ObjMatrices = new Matrices()
+    val results = for {i <- 1 to 9
+                        m1 = ObjMatrices.MatrizAlAzar(math.pow(2, i).toInt, 10)
+                        m2 = ObjMatrices.MatrizAlAzar(math.pow(2, i).toInt, 10)
+                      } yield (bench.compararAlgoritmos(ObjMatrices.multMatrizRec, ObjMatrices.multMatrizRecPar)(m1,m2), math.pow(2,i).toInt)
+    for (r <- results) println(r)
+  }
+
+  def testProdPunto(): Unit = {
+    val bench = new Benchmark()
+    val ObjMatrices = new Matrices()
+    val results = for {n <- 1 to 10001 by 1000
+                      } yield (bench.compararProdPunto(n), n)
+    for (r <- results) println(r)
+  }
 }

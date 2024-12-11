@@ -2,6 +2,9 @@ package taller
 import scala.util.Random
 import common._
 import scala.annotation.tailrec
+import scala.collection.parallel.CollectionConverters._
+import scala.collection.parallel.immutable._
+import scala.collection.parallel._
 
 class Matrices {
   // Tipo de matriz definido como alias
@@ -26,6 +29,9 @@ class Matrices {
     (v1 zip v2).map { case (i, j) => i * j }.sum
   }
 
+  def prodPuntoParD(v1: ParVector[Int], v2: ParVector[Int]): Int = {
+    (v1 zip v2).map { case (i, j) => i * j }.sum
+  }
   // Función para calcular matriz transpuesta
   def transpuesta(m: Matriz): Matriz = {
     val l = m.length
@@ -112,7 +118,7 @@ class Matrices {
 
         result
       } else{
-        multMatriz(m1, m2) // Por alguna razon el multMatriz es 40 veces mas rapido que multMatrizRec asi que usamos ese
+        multMatrizRec(m1, m2) // Por alguna razon el multMatriz es 40 veces mas rapido que multMatrizRec asi que usamos ese
       }                    // Igualmente multMatrizRecPar es el doble de rapida que multMatrizRec cuando usamos multMatrizRec
     }                      // en lugar de multMatriz
   }

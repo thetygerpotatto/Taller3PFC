@@ -15,15 +15,17 @@ class Benchmark {
     (alg1, alg2, acc)
   }
 
-  // def compararProdPunto(n: Int): (Quantity[Double], Quantity[Double], Double) = {
-  //   // val matObj = new Matrices()
-  //   // val v1 = matObj.vectorAlAzar(n, 100)
-  //   // val v2 = matObj.vectorAlAzar(n, 100)
-  //   // val p1 = withWarmer(new Warmer.Default) measure {matObj.prodPunto(v1, v2)}
-  //   // //val p2 = withWarmer(new Warmer.Default) measure {matObj.prodPuntoParD(v1.par, v2.par)}
-  //   // val diff = p1.value / p2.value 
-  //   // (p1, p2, diff)
-  // }
+  def compararProdPunto(n: Int): (Quantity[Double], Quantity[Double], Double) = {
+    val matObj = new Matrices()
+    val v1 = matObj.vectorAlAzar(n, 100)
+    val v2 = matObj.vectorAlAzar(n, 100)
+    val v1p = matObj.vectorAlAzar(n, 100).par
+    val v2p = matObj.vectorAlAzar(n, 100).par
+    val p1 = withWarmer(new Warmer.Default) measure {matObj.prodPunto(v1, v2)}
+    val p2 = withWarmer(new Warmer.Default) measure {matObj.prodPuntoParD(v1p, v2p)}
+    val diff = p1.value / p2.value 
+    (p1, p2, diff)
+  }
 
 
 }
