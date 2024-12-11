@@ -152,18 +152,19 @@ class Matrices {
     result
   }
 
-  def strassensMatrixMult(m1: Matriz, m2: Matriz) : Matriz = {
+  def multStrassen(m1: Matriz, m2: Matriz) : Matriz = {
     assert(isPowerOfTwo(m1.length) && isPowerOfTwo(m2.length) && m1.length == m2.length) 
     val length = m1.length
-    if (length <= 2) strassensAlg(m1, m2)
+    if (length == 1) multMatriz(m1, m2)
+    else if(length == 2) strassensAlg(m1, m2)
     else {
       val subMl = length/2
       val subMats = Vector.tabulate(2, 2)((i , j) => 
-        strassensMatrixMult(
-          strassensMatrixMult(subMatriz(m1, i*subMl, 0, subMl), subMatriz(m2, 0, j*subMl, subMl)),
-          strassensMatrixMult(subMatriz(m1, i*subMl, subMl, subMl), subMatriz(m2, subMl, j*subMl, subMl))
-          )
-          )
+        sumMatriz(
+          multStrassen(subMatriz(m1, i*subMl, 0, subMl), subMatriz(m2, 0, j*subMl, subMl)),
+          multStrassen(subMatriz(m1, i*subMl, subMl, subMl), subMatriz(m2, subMl, j*subMl, subMl))
+        )
+      )
         
       val result: Vector[Vector[Int]] = Vector(
         subMats(0)(0)(0) ++ subMats(0)(1)(0),
@@ -171,6 +172,35 @@ class Matrices {
         subMats(1)(0)(0) ++ subMats(1)(1)(0),
         subMats(1)(0)(1) ++ subMats(1)(1)(1))
       result
+    }
+  }
+
+  def multStrassenPar(m1: Matriz, m2: Matriz, maxProf: Int, prof: Int) : Matriz = {
+    assert(isPowerOfTwo(m1.length) && isPowerOfTwo(m2.length) && m1.length == m2.length) 
+    val length = m1.length
+    if (length == 1) multMatriz(m1, m2)
+    else if(length == 2) strassensAlg(m1, m2)
+    else {
+      if (prof < maxProf) {
+        val subMl = length/2
+        val subMatsTasks = Vector.tabulate(2, 2)((i , j) => 
+          task(sumMatriz(
+            multStrassenPar(subMatriz(m1, i*subMl, 0, subMl), subMatriz(m2, 0, j*subMl, subMl), prof + 1, 0),
+            multStrassenPar(subMatriz(m1, i*subMl, subMl, subMl), subMatriz(m2, subMl, j*subMl, subMl), prof + 1, 0)
+          ))
+        )
+
+        val subMats = Vector.tabulate(2, 2)((i, j) => subMatsTasks(i)(j).join())
+          
+        val result: Vector[Vector[Int]] = Vector(
+          subMats(0)(0)(0) ++ subMats(0)(1)(0),
+          subMats(0)(0)(1) ++ subMats(0)(1)(1),
+          subMats(1)(0)(0) ++ subMats(1)(1)(0),
+          subMats(1)(0)(1) ++ subMats(1)(1)(1))
+        result
+      } else {
+        multStrassen(m1, m2)
+      }
     }
   }
 }
